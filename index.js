@@ -8,6 +8,7 @@
     {
     
         if(input.length > 0){
+            //check if current element is an array, if it is, do parallel execution
             if(Array.isArray(input[0]))
             {
                 let resolve_count = 0
@@ -26,6 +27,7 @@
                     
                 }
             }
+            // Series Execution
             else
             {
                 lib.asyncOp(input[0]).then(()=>{
@@ -54,7 +56,6 @@
     class RandStringSource extends EventEmitter
     {
 
-        
 
         constructor (randStream) {
             super();
@@ -66,7 +67,10 @@
                 let char = '';
                 for(let i=0; i<data.length;i++) {
 
-
+                    /* 
+                    Check if ndot or the current number of dot found is even or odd. 
+                    If even start concatenating characters if odd try to ouput cocatenated char if has.  
+                    */
                     if(ndot%2 === 0)
                     {
                         char = char.replace('.', '');
@@ -99,9 +103,7 @@
                     }
                 }
 
-                
-                
-                
+
             });
 
             
@@ -125,10 +127,10 @@
 
         constructor(count)
         {
-            this.my_pool = [];
-            this.queues = [];
+            this.my_pool = []; // pool of resource
             this.count = count;
-
+            
+            // create a resource object
             this.resource = function()
             {
                 this.in_use = false;
@@ -137,6 +139,7 @@
                 }
             }
 
+            // inserts resource
             for(let i = 0; i<this.count; i++)
             {
                 this.my_pool.push(new this.resource());
@@ -161,6 +164,7 @@
                 }
             }
 
+            // if all resources are in use, try to check available resource again after 100 ms
             if(found_resource == false)
             {
                 setTimeout(()=>{
@@ -170,7 +174,6 @@
             }
         }
 
-        
     }
 
     // [UNCOMMENT THIS BLOCK TO TEST] 
